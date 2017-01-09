@@ -579,16 +579,23 @@ public class Packager {
                 //BuildAssetBundleName(file, directoryName);
 
 
+				TextureImporterFormat format = TextureImporterFormat.AutomaticCompressed;
+#if UNITY_EDITOR_OSX
+				format = TextureImporterFormat.RGBA16;
+#elif UNITY_ANDROID
+				UnityEngine.Debug.Log("UNITY_ANDROID");
+#endif
+
                 //设置tag
-                if (texImp.spritePackingTag != directoryName)
+				if (texImp.spritePackingTag != directoryName || texImp.textureFormat != format)
                 {
                     texImp.textureType = TextureImporterType.Sprite;
                     texImp.mipmapEnabled = false;
                     texImp.spritePackingTag = directoryName;
 
-                    texImp.textureFormat = TextureImporterFormat.AutomaticCompressed;
-                    texImp.SetPlatformTextureSettings("iPhone", 1024, TextureImporterFormat.Automatic16bit);
-                    texImp.SetPlatformTextureSettings("Android", 1024, TextureImporterFormat.AutomaticCompressed);
+					texImp.textureFormat = format;
+//                    texImp.SetPlatformTextureSettings("iPhone", 1024, TextureImporterFormat.Automatic16bit);
+//                    texImp.SetPlatformTextureSettings("Android", 1024, TextureImporterFormat.AutomaticCompressed);
 
                     texImp.SaveAndReimport();
                 }
