@@ -1,0 +1,19 @@
+Input = UnityEngine.Input
+Physics = UnityEngine.Physics
+--Engine
+RectTransformUtility = UnityEngine.RectTransformUtility
+Application   = UnityEngine.Application
+Path = Pathfinding.Path
+KeyCode = UnityEngine.KeyCode
+Text = UnityEngine.UI.Text
+Animation = UnityEngine.Animation
+RawImage = UnityEngine.UI.RawImage
+Image = UnityEngine.UI.Image
+Toggle = UnityEngine.UI.Toggle
+Animator = UnityEngine.Animator
+Collider = UnityEngine.Collider
+RenderTexture = UnityEngine.RenderTexture
+ParticleSystem = UnityEngine.ParticleSystem
+AudioSource = UnityEngine.AudioSource
+InputField = UnityEngine.UI.InputField
+Transform = UnityEngine.Transform
