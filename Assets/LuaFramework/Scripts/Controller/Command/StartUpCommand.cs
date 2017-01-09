@@ -9,7 +9,7 @@ public class StartUpCommand : ControllerCommand {
 
         GameObject gameMgr = GameObject.Find("GameManager");
         if (gameMgr != null) {
-            AppView appView = gameMgr.AddComponent<AppView>();
+            gameMgr.AddComponent<AppView>();
         }
         //-----------------关联命令-----------------------
         AppFacade.Instance.RegisterCommand(NotiConst.DISPATCH_MESSAGE, typeof(SocketCommand));

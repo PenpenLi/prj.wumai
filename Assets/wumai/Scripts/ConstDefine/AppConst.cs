@@ -58,11 +58,11 @@ namespace LuaFramework {
         /// 否则就需要自己将StreamingAssets里面的所有内容
         /// 复制到自己的Webserver上面，并修改下面的WebUrl。
         /// </summary>
-        public const bool UpdateMode = false;                       //更新模式-默认关闭 
-        public const bool LuaByteMode = true;                       //Lua字节码模式-默认关闭 
-        public const bool LuaBundleMode = true;                    //Lua代码AssetBundle模式
+        public static bool UpdateMode = false;                       //更新模式-默认关闭 
+        public static bool LuaByteMode = true;                       //Lua字节码模式-默认关闭 
+        public static bool LuaBundleMode = true;                    //Lua代码AssetBundle模式
 
-        public const bool assetExtract = false;                      //资源是否解压
+        public static bool assetExtract = false;                      //资源是否解压
 
         public const int TimerInterval = 1;
         public const int GameFrameRate = 45;                        //游戏帧频

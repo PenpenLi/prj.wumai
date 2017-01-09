@@ -259,7 +259,6 @@ public class Packager {
         StreamWriter sw = new StreamWriter(fs);
         for (int i = 0; i < files.Count; i++) {
             string file = files[i];
-            string ext = Path.GetExtension(file);
             if (file.EndsWith(".meta") || file.Contains(".DS_Store")) continue;
 
             string md5 = Util.md5file(file);
@@ -522,9 +521,6 @@ public class Packager {
 
         string path = GetSelectionPath();
         string directoryName = Path.GetFileName(path).ToLower();
-        string splitName = AppConst.ResourceNameSplit;
-
-
 
         //
         AssetImporter importer = AssetImporter.GetAtPath(path);
@@ -711,12 +707,18 @@ public class Packager {
 
                     try { GetDirectoriesDeep(d11, pattern, ref al); }
 
-                    catch (System.Exception e) { }
+                    catch (System.Exception e)
+                    {
+                        UnityEngine.Debug.LogError(e.ToString());
+                    }
 
                 }
 
             }
-            catch (System.Exception e) { }
+            catch (System.Exception e)
+            {
+                UnityEngine.Debug.LogError(e.ToString());
+            }
 
 
 
@@ -845,7 +847,6 @@ public class Packager {
         paths.Clear(); files.Clear();
         Recursive(AppConst.PublishAssetsPath);
 
-        ArrayList fileInfo = new ArrayList ();
         ArrayList copyFile = new ArrayList ();
         ArrayList packFile = new ArrayList();
         //读，再写

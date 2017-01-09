@@ -250,10 +250,10 @@ public class Tools
 	}
 
 
-	public static long getNowTicks()
-	{
-		return DateTime.Now.Ticks;
-	}
+    //public static long getNowTicks()
+    //{
+    //    return DateTime.Now.Ticks;
+    //}
 
 
 	/// <summary>
@@ -273,89 +273,58 @@ public class Tools
 	}
 
 
-	public static void setShaderInChildren(Transform tr, Shader defaultShader = null)
-	{
-		if (tr == null)
-			return;
-
-		SkinnedMeshRenderer[] smrs = tr.GetComponentsInChildren<SkinnedMeshRenderer>();
-		if (smrs != null)
-		{
-			foreach(var smr in smrs){
-				resetMat(smr.material, defaultShader);
-			}
-		}
-
-		MeshRenderer[] mrs = tr.GetComponentsInChildren<MeshRenderer>();
-		if (mrs != null)
-		{
-			foreach(var mr in mrs){
-				resetMat(mr.material, defaultShader);
-				foreach (Material m in mr.materials)
-				{
-					resetMat(m, defaultShader);
-				}
-			}
-		}
-
-//		TrailRenderer tailRender = tr.GetComponent<TrailRenderer>();
-//		if (tailRender != null)
-//		{
-//			resetMat(tailRender.material, defaultShader);
-//		}
-
-//		for (int i = 0; i < tr.childCount; i++)
-//		{
-//			setShaderBySearch(tr.GetChild(i), defaultShader);
-//		}
-	}
-
-
-	public static void resetMat(Material mat, Shader defaultShader = null)
-	{
-		if (mat == null)
-		{
-			return;
-		}
-		string shName = mat.shader.name;
-		if (defaultShader != null)
-		{
-			mat.shader = defaultShader;
-		}
-		else
-		{
-			mat.shader = Shader.Find(shName);
-		}
-	}
-
-
-	public static void setSkinnedMeshRendererMatieralInChildren(GameObject obj, Material mat){
-		if(mat== null)
-			return;
-
-		var components = obj.GetComponentsInChildren<SkinnedMeshRenderer>();
-		if(components == null) return;
-
-		foreach(var com in components){
-			com.material = mat;
-		}
-	}
-
-
-	public static void setLayerInChildren(Transform transform, int layer){
-		transform.gameObject.layer = layer;
-		int childCount = transform.childCount;
-		Transform child;
-		for(int i = 0; i < childCount; i++){
-			child = transform.GetChild(i);
-			setLayerInChildren(child, layer);
-		}
-	}
-
-
     public static string getUID()
     {
         return SystemInfo.deviceUniqueIdentifier;
+    }
+
+
+    public static void Log(string msg)
+    {
+        Debug.Log(msg);
+    }
+
+
+    public static void LogWarn(string msg)
+    {
+        Debug.LogWarning(msg);
+    }
+
+
+    public static void LogError(string msg)
+    {
+        Debug.LogError(msg);
+    }
+
+
+    public static int Random(int min, int max)
+    {
+        return UnityEngine.Random.Range(min, max);
+    }
+
+
+
+    public static int[] RandomArray(int len)
+    {
+        int[] order = new int[len];
+        int rnd;
+        for (int i = 1; i <= len; i++)
+        {
+            do
+            {
+                rnd = Random(0, len);
+            } while (order[rnd] != 0);
+            order[rnd] = i;
+        }
+
+        return order;
+    }
+
+
+    // 毫秒
+    public static long getCurTime()
+    {
+        return DateTime.Now.Ticks / 10000;
     }
 }
 

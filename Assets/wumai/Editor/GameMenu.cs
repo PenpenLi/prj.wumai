@@ -51,7 +51,7 @@ public class GameMenu {
         // 标记被引用资源
         foreach (var node in deps)
         {
-            string parent = node.Key;
+            //string parent = node.Key;
             List<string> list = node.Value;
             foreach (var dep in list)
             {

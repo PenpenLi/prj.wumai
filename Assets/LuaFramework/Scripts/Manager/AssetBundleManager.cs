@@ -96,7 +96,7 @@ namespace LuaFramework
         /// Implements per-bundle base downloading URL override.
         /// The subscribers must return null values for unknown bundle names;
         /// </summary>
-        public static event OverrideBaseDownloadingURLDelegate overrideBaseDownloadingURL;
+        //public static event OverrideBaseDownloadingURLDelegate overrideBaseDownloadingURL;
 
         /// <summary>
         /// Variants which is used to define the active variants.
@@ -509,31 +509,6 @@ namespace LuaFramework
             return operation;
         }
 
-        /// <summary>
-        /// Starts a load operation for a level from the given asset bundle.
-        /// </summary>
-        static public AssetBundleLoadOperation LoadLevelAsync(string assetBundleName, string levelName, bool isAdditive)
-        {
-            Log(LogType.Info, "Loading " + levelName + " from " + assetBundleName + " bundle");
-
-            AssetBundleLoadOperation operation = null;
-#if UNITY_EDITOR
-            if (AppConst.SimulateAssetBundleInEditor)
-            {
-                operation = new AssetBundleLoadLevelSimulationOperation(assetBundleName, levelName, isAdditive);
-            }
-            else
-#endif
-            {
-                assetBundleName = RemapVariantName(assetBundleName);
-                LoadAssetBundle(assetBundleName);
-                operation = new AssetBundleLoadLevelOperation(assetBundleName, levelName, isAdditive);
-
-                m_InProgressOperations.Add(operation);
-            }
-
-            return operation;
-        }
 
         //待增
         public void LoadAsyncPrefab(string assetBundleName, string assetName, LuaFunction func){

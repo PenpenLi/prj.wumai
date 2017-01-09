@@ -16,7 +16,7 @@ namespace LuaFramework {
             this.value2 = value2;
         }
 
-        public string ToString() {
+        new public string ToString() {
             return string.Format("name={0} value1={1} = value2={2}", name, value1, value2);
         }
     }

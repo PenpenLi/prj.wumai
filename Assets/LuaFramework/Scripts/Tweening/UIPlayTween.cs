@@ -58,9 +58,7 @@ public class UIPlayTween : MonoBehaviour
 	public Action onAllFinished;
 
 	UITweener[] mTweens;
-	bool mStarted = false;
 	int mActive = 0;
-	bool mActivated = false;
 
 	void Awake ()
 	{
@@ -68,8 +66,6 @@ public class UIPlayTween : MonoBehaviour
 
 	void Start()
 	{
-		mStarted = true;
-
 		if (tweenTarget == null)
 		{
 			tweenTarget = gameObject;

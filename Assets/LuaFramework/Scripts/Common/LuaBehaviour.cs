@@ -8,7 +8,6 @@ using UnityEngine.UI;
 namespace LuaFramework {
     public class LuaBehaviour : View {
 		public static bool initialize = false;
-        private string data = null;
         private Dictionary<string, LuaFunction> buttons = new Dictionary<string, LuaFunction>();
         public LuaTable luaTableObject = null;
 
@@ -104,8 +103,6 @@ namespace LuaFramework {
         /// 初始化面板
         /// </summary>
         public void OnInit( LuaTable luatable, string text = null ) {
-            this.data = text;   //初始化附加参数
-
             if ( luatable != null ) {
 				setLuaScript( luatable );
             }

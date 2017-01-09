@@ -14,8 +14,8 @@ namespace LuaFramework {
 	}
 
 	public class GameObjectPool {
-        private int maxSize;
-		private int poolSize;
+        //private int maxSize;
+        //private int poolSize;
 		private string poolName;
         private Transform poolRoot;
         private GameObject poolObjectPrefab;
@@ -23,8 +23,8 @@ namespace LuaFramework {
 
         public GameObjectPool(string poolName, GameObject poolObjectPrefab, int initCount, int maxSize, Transform pool) {
 			this.poolName = poolName;
-			this.poolSize = initCount;
-            this.maxSize = maxSize;
+            //this.poolSize = initCount;
+            //this.maxSize = maxSize;
             this.poolRoot = pool;
             this.poolObjectPrefab = poolObjectPrefab;
 

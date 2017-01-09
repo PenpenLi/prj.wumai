@@ -15,8 +15,6 @@ using UnityEditor;
 
 namespace LuaFramework {
     public class Util {
-        private static List<string> luaPaths = new List<string>();
-
         public static int Int(object o) {
             return Convert.ToInt32(o);
         }
