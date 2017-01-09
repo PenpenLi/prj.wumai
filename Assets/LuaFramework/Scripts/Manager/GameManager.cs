@@ -309,8 +309,6 @@ namespace LuaFramework {
             // LuaManager.DoFile("Logic/Network");      //加载网络
             // NetManager.OnInit();                     //初始化网络
             Util.CallMethod("Main", "main");     //初始化完成
-
-            
         }
 
         /// <summary>
