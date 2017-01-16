@@ -9,6 +9,12 @@ using Global;
 public class PanelInput : PanelBase
 {
 
+    public PanelInput(object arguments)
+        : base(arguments)
+    {
+    }
+
+
     public override int getLayer()
     {
         return MgrPanel.LAYER_UI;
@@ -21,17 +27,18 @@ public class PanelInput : PanelBase
     }
 
 
-    public override string getResName()
+    public override string getAssetBundleName()
     {
-        return "PanelInput";
+        return "UI/PanelInput/prefab";
     }
 
 
 
     Text m_inputText;
     CallbackWithParam m_callback;
-    public override void onBuild(Hashtable param)
+    public override void onCreate(object arguments)
     {
+        var param = arguments as Hashtable;
         string title = param["title"] as string;
         string tip = param["tip"] as string;
         m_callback = param["callback"] as CallbackWithParam;
@@ -67,10 +74,6 @@ public class PanelInput : PanelBase
         }
     }
 
-
-    public override void clean()
-    {
-    }
 
 
 

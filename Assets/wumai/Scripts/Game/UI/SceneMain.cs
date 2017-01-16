@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using EventSystem;
+using GameFramework;
 
 
 
@@ -9,13 +9,11 @@ public class SceneMain : SceneBase {
 	{
         Tools.Log("enter SceneMain.");
         
-        MgrPanel.openDebugInfo();
-
-        addEventCallback(EventId.MSG_CONNECTED, onConnected);
-        addEventCallback(EventId.MSG_GAME_START, onStartGame);
-        addEventCallback(EventId.MSG_DISCONNECTED, onDisconnected);
-        addEventCallback(EventId.MSG_GAME_OVER, onGameOver);
+        //addEventCallback(EventId.MSG_GAME_OVER, onGameOver);
         startProcMsg();
+
+
+        MgrPanel.openMain();
 	}
 
 
@@ -25,27 +23,6 @@ public class SceneMain : SceneBase {
         MgrPanel.disposeAllPanel(MgrPanel.LAYER_UI);
     }
 
-
-    void onGameOver(GameEvent e)
-    {
-        Tools.Log("Game Over");
-        MgrPanel.disposeAllPanel(MgrPanel.LAYER_UI);
-        MgrPanel.openMain();
-    }
-
-
-    void onConnected(GameEvent e)
-    {
-        MgrPanel.disposeAllPanel(MgrPanel.LAYER_UI);
-        MgrPanel.openMain();
-    }
-
-
-    public void onDisconnected(GameEvent e)
-    {
-        MgrPanel.disposeAllPanel(MgrPanel.LAYER_UI);
-        MgrPanel.openMain();
-    }
 
 
     public override void onLeave()

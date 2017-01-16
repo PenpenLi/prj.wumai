@@ -25,7 +25,7 @@ public class MgrPanel : EventBehaviour
             data["onNo"] = onNo;
    
         data["text"] = text;
-        openPanel( new PanelDialog(), data);
+        openPanel(new PanelDialog(data));
     }
 
 
@@ -54,7 +54,7 @@ public class MgrPanel : EventBehaviour
         param["options"] = options;
         param["callback"] = callback;
 
-        openPanel(new PanelOption(), param);
+        openPanel(new PanelOption(param));
     }
 
 
@@ -65,7 +65,7 @@ public class MgrPanel : EventBehaviour
         param["tip"] = tip;
         param["callback"] = callback;
 
-        openPanel(new PanelInput(), param);
+        openPanel(new PanelInput(param));
     }
 
 
@@ -264,9 +264,8 @@ public class MgrPanel : EventBehaviour
     }
 
 
-    static void openPanel(PanelBase panel, Hashtable param = null)
+    static void openPanel(PanelBase panel)
     {
-        panel.setParam(param);
         addPanel(panel);
     }
 
@@ -301,6 +300,7 @@ public class MgrPanel : EventBehaviour
 
         pushStack(panel, layer);
         panel.setParent(getLayerNode(layer));
+        panel.hide();
         panel.show();
     }
 

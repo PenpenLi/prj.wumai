@@ -31,6 +31,7 @@ package.path = package.path..(string.format(";%s?.lua;", RES_PATH))
 ------ 加载依赖库 ------
 local CfgParser = require("CfgParser")
 require("saveTable")
+local CSClass = require("CSClass")
 
 
 ------ 加载cfg_db ------
@@ -60,6 +61,37 @@ end
 -- 保证顺序
 table.sort( fileNames )
 SaveTable( fileNames, string.format( "%s%s.lua", SAVE_PATH, "CfgFiles" ) )
+
+
+------ 导出CS数据结构
+local CS_PATH = "../../Assets/wumai/Lua/Game/Config/"
+for name, data in pairs(dbCfg) do
+	data = dofile(name)
+	local types, fields = data.types, data.fields
+
+	local cs = CSClass.New()
+	-- cs:addNameSpace("Game")
+	cs:addClassName(name)
+
+	local key
+	for idx, fType in ipairs(types) do
+		key = fields[idx]
+		if fType == "S" then
+			cs:addStringField(key)
+		elseif fType == "I" then
+			cs:addIntField(key)
+		elseif fType == "F" then
+			cs:addFloatField(key)
+		elseif fType == "boolean" then
+			cs:addBoolField(key)
+		else
+			print(string.format("can't find type %s by key %s", fType, key))
+		end			
+	end
+
+	cs:save(CS_PATH .. name)
+end
+
 
 
 print( "======> save complete! <======" )

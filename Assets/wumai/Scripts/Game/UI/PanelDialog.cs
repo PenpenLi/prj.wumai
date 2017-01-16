@@ -8,6 +8,11 @@ using UnityEngine.Events;
 public class PanelDialog : PanelBase {
 
 
+    public PanelDialog(object arguments)
+        : base(arguments)
+    {
+    }
+
     public override int getLayer()
     {
         return MgrPanel.LAYER_UI;
@@ -20,9 +25,9 @@ public class PanelDialog : PanelBase {
     }
 
 
-    public override string getResName()
+    public override string getAssetBundleName()
     {
-        return "PanelDialog";
+        return "UI/PanelDialog/prefab";
     }
 
 
@@ -30,8 +35,10 @@ public class PanelDialog : PanelBase {
     UnityAction m_onClickNo;
 
 
-    public override void onBuild(Hashtable param)
+    public override void onCreate(object arguments)
     {
+        var param = arguments as Hashtable;
+
         var btnYes = transform.FindChild("BG/BtnYes");
         btnYes.GetComponent<Button>().onClick.AddListener(onClickYes);
 
@@ -91,12 +98,6 @@ public class PanelDialog : PanelBase {
     }
 
 
-    public override void clean()
-    {
-    }
-
-
-    
 
 
 

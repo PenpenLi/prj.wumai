@@ -10,6 +10,12 @@ using Global;
 public class PanelOption : PanelBase
 {
 
+
+    public PanelOption(object arguments): base(arguments)
+    {
+    }
+
+
     public override int getLayer()
     {
         return MgrPanel.LAYER_UI;
@@ -22,16 +28,17 @@ public class PanelOption : PanelBase
     }
 
 
-    public override string getResName()
+    public override string getAssetBundleName()
     {
-        return "PanelOption";
+        return "UI/PanelOption/prefab";
     }
 
 
     List<OptionItem> m_list = new List<OptionItem>();
     CallbackWithParam m_callback;
-    public override void onBuild(Hashtable param)
+    public override void onCreate(object arguments)
     {
+        var param = arguments as Hashtable;
         for (int i = 1; i <= 5; i++)
         {
             m_list.Add(new OptionItem(transform.FindChild("BG/Btn" + i).gameObject, i));
@@ -62,11 +69,6 @@ public class PanelOption : PanelBase
     {
         m_callback(obj);
         close();
-    }
-
-
-    public override void clean()
-    {
     }
 
 

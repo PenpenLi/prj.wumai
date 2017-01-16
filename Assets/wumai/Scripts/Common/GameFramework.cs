@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 
 
-namespace EventSystem
+namespace GameFramework
 {
     public class GameEvent
     {
 
         private object m_data = null;
         private bool m_stop = false;
+        private string aaa = null;
 
         public GameEvent()
         {
@@ -143,21 +144,18 @@ namespace EventSystem
 
 
     /**
- * 
- * 这个类是有问题的，并非线程安全，目前只对ui Event上锁
- * 
- * 在多线程下add和dispatch可能出现未知bug
- * 
- */
+    * 
+    * 这个类是有问题的，并非线程安全，目前只对ui Event上锁
+    * 
+    * 在多线程下add和dispatch可能出现未知bug
+    * 
+    */
     public class EventDispatcher
     {
 
         private static EventDispatcher inst = new EventDispatcher();
-        public static EventDispatcher getGlobalInstance()
-        {
-            return inst;
-        }
-
+        public static EventDispatcher getGlobalInstance(){return inst;}
+        
 
 
         private Dictionary<EventId, LinkedList<EventListener>> allListeners = new Dictionary<EventId, LinkedList<EventListener>>();

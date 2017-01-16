@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UEventSystems = UnityEngine.EventSystems;
+using UnityEngine.EventSystems;
 
 
 
@@ -111,7 +111,7 @@ public class ULGuideHelper : MonoBehaviour {
         UIEventListener listener = child.GetComponent<UIEventListener>();
         if (listener != null)
         {
-            listener.OnPointerDown(new UEventSystems.PointerEventData(UEventSystems.EventSystem.current));
+            listener.OnPointerDown(new PointerEventData(EventSystem.current));
 			StartCoroutine (LaterUp(listener));
             return;
         }
@@ -124,7 +124,7 @@ public class ULGuideHelper : MonoBehaviour {
 	{
 		yield return null;
 		if(listener && listener.enabled)
-            listener.OnPointerUp(new UEventSystems.PointerEventData(UEventSystems.EventSystem.current));
+            listener.OnPointerUp(new PointerEventData(EventSystem.current));
 	}
 
 

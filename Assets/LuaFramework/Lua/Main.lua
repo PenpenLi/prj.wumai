@@ -1,4 +1,3 @@
-require "Common/import"
 _G.UPDATER_BOOTED = false
 
 
@@ -10,6 +9,7 @@ end
 
 -- 开启更新器
 function Main.startUpdater()
+	require "Common/import"
 	local unloadModules = {
 		"FileLoader",
 		"Updater",

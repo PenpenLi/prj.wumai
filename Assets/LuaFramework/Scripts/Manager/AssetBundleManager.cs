@@ -512,19 +512,16 @@ namespace LuaFramework
 
         //待增
         public void LoadAsyncPrefab(string assetBundleName, string assetName, LuaFunction func){
-
-
             StartCoroutine(OnLoadAssetBundle(assetBundleName, assetName, func, null, typeof(UObject)));
         }
 
+
         public void LoadAsyncPrefab2(string assetBundleName, string assetName, Action<UObject> action){
-
-
-            StartCoroutine(OnLoadAssetBundle(assetBundleName, assetName, null, action, typeof(GameObject)));
+            StartCoroutine(OnLoadAssetBundle(assetBundleName, assetName, null, action, typeof(UObject)));
         }
+
+
         public void LoadPrefab(string assetBundleName, string assetName){
-
-
             StartCoroutine(OnLoadAssetBundle(assetBundleName, assetName, null, null, typeof(GameObject)));
         }
 

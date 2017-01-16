@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using EventSystem;
+using GameFramework;
 using System;
 
 
@@ -22,8 +22,9 @@ public class PanelLoading : PanelBase
     }
 
 
-    public override void clean()
+    public override void dispose()
     {
+        base.dispose();
         m_inst = null;
     }
 
@@ -40,24 +41,20 @@ public class PanelLoading : PanelBase
     }
 
 
-    public override string getResName()
+    public override string getAssetBundleName()
     {
-        return "PanelLoading";
+        return "UI/PanelLoading/prefab";
     }
-
-    private PanelLoading()
-    {
-        addEventCallback(EventId.UI_CLOSE_LOADING, onClose);
-        addEventCallback(EventId.UI_UPDATE_LOADING, onUpdate);
-        startProcMsg();
-    }
-
 
     Text m_text;
-    public override void onBuild(Hashtable param)
+    public override void onCreate(object arguments)
     {
         m_text = transform.FindChild("Text").GetComponent<Text>();
         m_text.text = "0%";
+
+        //addEventCallback(EventId.UI_CLOSE_LOADING, onClose);
+        //addEventCallback(EventId.UI_UPDATE_LOADING, onUpdate);
+        //startProcMsg();
     }
 
 

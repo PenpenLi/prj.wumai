@@ -2,7 +2,7 @@
 using Global;
 using System.Collections.Generic;
 using System;
-using EventSystem;
+using GameFramework;
 
 
 public class MgrTimer : EventBehaviour

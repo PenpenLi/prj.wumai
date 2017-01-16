@@ -1,52 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
-using EventSystem;
+using GameFramework;
 
 
-public abstract class PanelBase : EventHandler {
+public abstract class PanelBase : ResObject {
 
-    protected GameObject gameObject = null;
-    protected RectTransform transform = null;
 
-    public abstract string getResName();
-
-    public abstract void onBuild(Hashtable param);
     
     public abstract int getLayer();
 
     public abstract int getStyle();
 
-    public abstract void clean();
 
 
-    public PanelBase()
+    public PanelBase() : base(null, null) { }
+
+
+    public PanelBase(object arguments):base(arguments, null)
     {
-        gameObject = MgrRes.newObject(getResName()) as GameObject;
-        transform = gameObject.transform as RectTransform;
-    }
-
-
-    public void setParam(Hashtable param)
-    {
-        onBuild(param);
-    }
-
-
-    public void setParent(Transform parent)
-    {
-        transform.SetParent(parent, false);
-    }
-
-
-    public virtual void show()
-    {
-        gameObject.SetActive(true);
-    }
-
-
-    public virtual void hide()
-    {
-        gameObject.SetActive(false);
     }
 
 
@@ -57,11 +28,10 @@ public abstract class PanelBase : EventHandler {
     }
 
 
-    public void dispose()
+    public override void dispose()
     {
+        base.dispose();
         GameObject.Destroy(gameObject);
-        stopProcMsg();
-        clean();
     }
 
 }

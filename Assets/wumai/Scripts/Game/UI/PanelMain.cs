@@ -20,8 +20,9 @@ public class PanelMain : PanelBase
     }
 
 
-    public override void clean()
+    public override void dispose()
     {
+        base.dispose();
         m_inst = null;
     }
 
@@ -37,14 +38,13 @@ public class PanelMain : PanelBase
         return MgrPanel.STYLE_COMMON;
     }
 
-
-    public override string getResName()
+    public override string getAssetBundleName()
     {
-        return "PanelMain";
+        return "UI/PanelMain/prefab";
     }
 
 
-    public override void onBuild(Hashtable param)
+    public override void onCreate(object arguments)
     {
         transform.FindChild("BtnJoin").GetComponent<Button>().onClick.AddListener(onClickJoin);
         transform.FindChild("BtnCreate").GetComponent<Button>().onClick.AddListener(onClickCreate);

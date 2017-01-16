@@ -52,15 +52,40 @@ public class BMFontEditor : EditorWindow
                 BMGlyph bmInfo = bmFont.glyphs[i];
                 CharacterInfo info = new CharacterInfo();
                 info.index = bmInfo.index;
-                info.uv.x = (float)bmInfo.x / (float)bmFont.texWidth;
-                info.uv.y = 1 - (float)bmInfo.y / (float)bmFont.texHeight;
-                info.uv.width = (float)bmInfo.width / (float)bmFont.texWidth;
-                info.uv.height = -1f * (float)bmInfo.height / (float)bmFont.texHeight;
-                info.vert.x = 0;
-                info.vert.y = -(float)bmInfo.height;
-                info.vert.width = (float)bmInfo.width;
-                info.vert.height = (float)bmInfo.height;
-                info.width = (float)bmInfo.advance;
+                
+                // old
+                //info.uv.x = (float)bmInfo.x / (float)bmFont.texWidth;
+                //info.uv.y = 1 - (float)bmInfo.y / (float)bmFont.texHeight;
+                //info.uv.width = (float)bmInfo.width / (float)bmFont.texWidth;
+                //info.uv.height = -1f * (float)bmInfo.height / (float)bmFont.texHeight;
+
+                float x = (float)bmInfo.x / (float)bmFont.texWidth;
+                float y = 1 - (float)bmInfo.y / (float)bmFont.texHeight;
+                float width = (float)bmInfo.width / (float)bmFont.texWidth;
+                float height = -1f * (float)bmInfo.height / (float)bmFont.texHeight;
+
+                info.uvTopLeft = new Vector2(x, y);
+                info.uvBottomRight = new Vector2(x + width, y + height);
+
+
+                //info.vert.x = 0;
+                //info.vert.y = -(float)bmInfo.height;
+                //info.vert.width = (float)bmInfo.width;
+                //info.vert.height = (float)bmInfo.height;
+
+                x = 0;
+                y = -bmInfo.height;
+                width = bmInfo.width;
+                height = bmInfo.height;
+
+                info.minX = 0;
+                info.minY = (int)y;
+                info.maxX = (int)width;
+                info.maxY = (int)(y + height);
+
+                //info.width = (float)bmInfo.advance;
+                info.advance = bmInfo.advance;
+                
                 characterInfo[i] = info;
             }
             targetFont.characterInfo = characterInfo;

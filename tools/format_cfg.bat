@@ -5,7 +5,7 @@ echo ROOT:%TOOL_ROOT%
 
 
 set RES_PATH=../../_config/lua
-set SAVE_PATH=../../Assets/Game11/Lua/Game/Config
+set SAVE_PATH=../../Assets/wumai/Lua/Game/Config
 set DB_CFG=cfg_db
 
 pushd %TOOL_ROOT%
