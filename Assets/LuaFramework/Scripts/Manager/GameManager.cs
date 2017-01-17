@@ -297,16 +297,21 @@ namespace LuaFramework {
             this.OnInitialize();
         }
 
+
         void OnInitialize() {
             LuaManager.InitStart();
             LuaBehaviour.initialize = true;
-            LuaManager.DoFile("Main");         //加载游戏
-            // LuaManager.DoFile("Logic/Network");      //加载网络
-            // NetManager.OnInit();                     //初始化网络
-            Util.CallMethod("Main", "main");     //初始化完成
+            LuaManager.DoFile("Main");                  //加载游戏
+            //LuaManager.DoFile("Logic/Network");         //加载网络
+            //NetManager.OnInit();                        //初始化网络
+            Util.CallMethod("Main", "main");            //初始化完成
 
-            MgrScene.openNextScene(new SceneMain());
+            DbLoader.init();
+
+            //gameObject.AddComponent<MgrScene>();
+            //gameObject.AddComponent<MgrPanel>();
         }
+
 
         /// <summary>
         /// 析构函数

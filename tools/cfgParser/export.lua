@@ -62,40 +62,90 @@ end
 table.sort( fileNames )
 SaveTable( fileNames, string.format( "%s%s.lua", SAVE_PATH, "CfgFiles" ) )
 
-os.execute("pause")
+
 xpcall(
 	function ()
 		------ 导出CS数据结构
-		local CS_PATH = "../../Assets/wumai/Lua/Game/Config/"
-		for name, data in pairs(dbCfg) do
-			data = dofile(name)
+		local CS_PATH = "../../Assets/wumai/Scripts/Data/"
+
+		local dbLoader = CSClass.New()
+
+		dbLoader:addClassName("DbLoader")
+		dbLoader:addUsing("LuaFramework")
+		dbLoader:addUsing("LuaInterface")
+		dbLoader:addCustom("private static bool m_bInited = false;")
+		dbLoader:addCustom("public delegate DbBase CreateDbItem();")
+		dbLoader:startFunction("private static void callInit<T>(LuaFunction initFunc, string name) where T : DbBase, new()")
+		dbLoader:addFuncContent("CreateDbItem createFunc = () =>{return new T();};")
+		dbLoader:addFuncContent("initFunc.Call(name, createFunc);")
+		dbLoader:endFunction()
+
+		dbLoader:startFunction("public static void init()")
+		dbLoader:addFuncContent("if(m_bInited) return;")
+		dbLoader:addFuncContent("var mgr = AppFacade.Instance.GetManager<LuaManager>(ManagerName.Lua);")
+		dbLoader:addFuncContent("var tb = mgr.DoFile(\"Game/Common/DbLoader\")[0] as LuaTable;")
+		dbLoader:addFuncContent("var luaInitFunc = tb[\"init\"] as LuaFunction;\n")
+
+
+		for name, _ in pairs(dbCfg) do
+			
+			package.preload[name] = nil
+			package.loaded[name] = nil
+			data = require(name)
+
+			dbLoader:addFuncContent(string.format("callInit<%s>(luaInitFunc, \"%s\");", name, name))
+
 			local types, fields = data.types, data.fields
 
 			local cs = CSClass.New()
 			-- cs:addNameSpace("Game")
-			cs:addClassName(name)
+			cs:addClassName(string.format("%s : DbBase", name))
+			cs:addUsing("LuaInterface")
+			cs:addUsing("System.Collections.Generic")
+			cs:addCustom(string.format("private static Dictionary<int, %s> m_allData = new Dictionary<int,%s>();", name, name))
+
+			cs:startFunction("public override void init(int a, LuaTable data)")
 
 			local key
 			for idx, fType in ipairs(types) do
 				key = fields[idx]
 				if fType == "S" then
 					cs:addStringField(key)
+					cs:addFuncContent(string.format("%s = (string)data[\"%s\"];", key, key))
 				elseif fType == "I" then
 					cs:addIntField(key)
+					cs:addFuncContent(string.format("%s = (int)data[\"%s\"];", key, key))
 				elseif fType == "F" then
 					cs:addFloatField(key)
-				elseif fType == "boolean" then
+					cs:addFuncContent(string.format("%s = (float)data[\"%s\"];", key, key))
+				elseif fType == "B" then
 					cs:addBoolField(key)
+					cs:addFuncContent(string.format("%s = (bool)data[\"%s\"];", key, key))
 				else
 					print(string.format("can't find type %s by key %s", fType, key))
-				end			
+				end
 			end
 
-			-- cs:save(CS_PATH .. name .. ".cs")
+			cs:endFunction()
+
+    		cs:startFunction(string.format("public static %s get(int key)", name))
+    		cs:addFuncContent(string.format("%s db;", name))
+    		cs:addFuncContent("m_allData.TryGetValue(key, out db);")
+    		cs:addFuncContent("return db;")
+    		cs:endFunction()
+
+
+			cs:save(CS_PATH .. name .. ".cs")
 		end
+    	
+    	dbLoader:addFuncContent("")
+    	dbLoader:addFuncContent("m_bInited = true;")
+    	dbLoader:endFunction()
+    	dbLoader:save(CS_PATH .. "DbLoader" .. ".cs")
 	end,
-	function ( e )
-		print("--------- ", e, debug.traceback())
+	function (e)
+		print(e, debug.traceback())
+		os.execute("pause")
 	end
 )
 
@@ -105,7 +155,6 @@ print( "======> save complete! <======" )
 
 
 
-os.execute("pause")
 -- daimao={name="cat",niu = false, age=2,body={eyes="green",mouth="big"}}
 -- table.save(daimao, "test2.lua")
 -- SaveTable(daimao, "test3.lua")

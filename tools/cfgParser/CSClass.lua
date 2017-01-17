@@ -2,7 +2,8 @@ local CSClass = {}
 
 
 
-local FIELD_SPACE = "        "
+local CLASS_SPACE = ""
+local FIELD_SPCAE = "    "
 
 
 function CSClass.New()
@@ -13,6 +14,7 @@ function CSClass.New()
 		iField = {},
 		fField = {},
 		bField = {},
+		cCustom = {},
 	}
 
 	return setmetatable(cs, {__index = CSClass})
@@ -56,6 +58,34 @@ function CSClass:addBoolField(name)
 end
 
 
+function CSClass:addCustom(str)
+	table.insert(self.cCustom, FIELD_SPCAE .. str)
+end
+
+
+
+-- startFuncName & addFuncContent & endFuncName是一个方法组，不能分开使用
+function CSClass:startFunction(func)
+	self.funcText = string.format("%s%s\n%s{", FIELD_SPCAE, func, FIELD_SPCAE)
+end
+
+
+function CSClass:addFuncContent(str)
+	self.funcText = string.format("%s\n%s%s", self.funcText, FIELD_SPCAE .. FIELD_SPCAE, str)
+end
+
+
+function CSClass:endFunction()
+	if not self.funcText then return end
+
+	table.insert(self.cCustom, string.format("%s\n%s}\n", self.funcText, FIELD_SPCAE))
+	self.funcText = nil
+end
+
+
+
+
+
 -- function CSClass:addEmptyLine()
 -- 	self.csText = string.format("%s\n", self.csText)
 -- end
@@ -64,12 +94,11 @@ end
 function CSClass:save(fileName)
 	if not self.className then print("can't find class name.") return end
 
-	local CLASS_SPACE = ""
-	local FIELD_SPCAE = "    "
-	if self.nameSpace then
-		CLASS_SPACE = CLASS_SPACE .. FIELD_SPCAE
-		FIELD_SPCAE = FIELD_SPCAE .. FIELD_SPCAE
-	end
+
+	-- if self.nameSpace then
+	-- 	CLASS_SPACE = CLASS_SPACE .. FIELD_SPCAE
+	-- 	FIELD_SPCAE = FIELD_SPCAE .. FIELD_SPCAE
+	-- end
 
 	local csText = ""
 
@@ -91,6 +120,11 @@ function CSClass:save(fileName)
 
 	for _, name in ipairs(self.bField) do
 		csText = string.format("%s%spublic bool %s = false;\n", csText, FIELD_SPCAE, name)
+	end
+	csText = csText .. "\n"
+
+	for _, str in ipairs(self.cCustom) do
+		csText = string.format("%s\n%s", csText, str)
 	end
 
 

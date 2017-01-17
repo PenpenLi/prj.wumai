@@ -34,3 +34,6 @@ function Main.startApp()
 	local MyApp = require "Game/MyApp"
 	MyApp.New():run()
 end
+
+
+return Main

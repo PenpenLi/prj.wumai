@@ -12,6 +12,7 @@ public static class LuaBinder
 		LuaInterface_DebuggerWrap.Register(L);
 		ToolsWrap.Register(L);
 		NotiConstWrap.Register(L);
+		DbBaseWrap.Register(L);
 		ViewWrap.Register(L);
 		BaseWrap.Register(L);
 		L.BeginModule("UnityEngine");

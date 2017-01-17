@@ -69,11 +69,11 @@ public class MgrRes
         string assetBundleName;
         if (fullPath)
         {
-            assetBundleName = getAssetBundleNameByKey(assetBundleKey);
+            assetBundleName = assetBundleKey;
         }
         else
         {
-            assetBundleName = assetBundleKey;
+            assetBundleName = getAssetBundleNameByKey(assetBundleKey);
         }
 
         LuaHelper.GetAssetBundleManager().LoadAsyncPrefab2(assetBundleName, assetName, obj =>

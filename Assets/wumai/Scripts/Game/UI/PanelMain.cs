@@ -11,12 +11,10 @@ public class PanelMain : PanelBase
 
 
     static PanelMain m_inst = null;
-    public static PanelMain getInstance()
+    public static void open()
     {
         if (m_inst == null)
             m_inst = new PanelMain();
-
-        return m_inst;
     }
 
 
@@ -44,7 +42,7 @@ public class PanelMain : PanelBase
     }
 
 
-    public override void onCreate(object arguments)
+    public override void onBuild(object arguments)
     {
         transform.FindChild("BtnJoin").GetComponent<Button>().onClick.AddListener(onClickJoin);
         transform.FindChild("BtnCreate").GetComponent<Button>().onClick.AddListener(onClickCreate);
@@ -72,7 +70,7 @@ public class PanelMain : PanelBase
 
     void onClickOption(object o)
     {
-        MgrPanel.openLoading();
+        PanelLoading.open();
     }
 
 }

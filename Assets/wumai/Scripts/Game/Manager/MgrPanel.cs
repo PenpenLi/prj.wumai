@@ -25,19 +25,7 @@ public class MgrPanel : EventBehaviour
             data["onNo"] = onNo;
    
         data["text"] = text;
-        openPanel(new PanelDialog(data));
-    }
-
-
-    public static void openLoading()
-    {
-        openPanel(PanelLoading.getInstance());
-    }
-
-
-    public static void openMain()
-    {
-        openPanel(PanelMain.getInstance());
+        new PanelDialog(data);
     }
 
 
@@ -54,7 +42,7 @@ public class MgrPanel : EventBehaviour
         param["options"] = options;
         param["callback"] = callback;
 
-        openPanel(new PanelOption(param));
+        new PanelOption(param);
     }
 
 
@@ -65,7 +53,7 @@ public class MgrPanel : EventBehaviour
         param["tip"] = tip;
         param["callback"] = callback;
 
-        openPanel(new PanelInput(param));
+        new PanelInput(param);
     }
 
 
@@ -264,13 +252,7 @@ public class MgrPanel : EventBehaviour
     }
 
 
-    static void openPanel(PanelBase panel)
-    {
-        addPanel(panel);
-    }
-
-
-    static void addPanel(PanelBase panel)
+    public static void addPanel(PanelBase panel)
     {
         if (findPanel(panel))
         {
@@ -341,8 +323,6 @@ public class MgrPanel : EventBehaviour
 
         
     }
-
-
 
 
 

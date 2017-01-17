@@ -13,7 +13,7 @@ public class SceneMain : SceneBase {
         startProcMsg();
 
 
-        MgrPanel.openMain();
+        PanelMain.open();
 	}
 
 

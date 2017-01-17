@@ -13,6 +13,7 @@ public class PanelDialog : PanelBase {
     {
     }
 
+
     public override int getLayer()
     {
         return MgrPanel.LAYER_UI;
@@ -35,7 +36,7 @@ public class PanelDialog : PanelBase {
     UnityAction m_onClickNo;
 
 
-    public override void onCreate(object arguments)
+    public override void onBuild(object arguments)
     {
         var param = arguments as Hashtable;
 

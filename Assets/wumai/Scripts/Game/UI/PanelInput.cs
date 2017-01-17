@@ -36,7 +36,7 @@ public class PanelInput : PanelBase
 
     Text m_inputText;
     CallbackWithParam m_callback;
-    public override void onCreate(object arguments)
+    public override void onBuild(object arguments)
     {
         var param = arguments as Hashtable;
         string title = param["title"] as string;

@@ -36,7 +36,7 @@ public class PanelOption : PanelBase
 
     List<OptionItem> m_list = new List<OptionItem>();
     CallbackWithParam m_callback;
-    public override void onCreate(object arguments)
+    public override void onBuild(object arguments)
     {
         var param = arguments as Hashtable;
         for (int i = 1; i <= 5; i++)

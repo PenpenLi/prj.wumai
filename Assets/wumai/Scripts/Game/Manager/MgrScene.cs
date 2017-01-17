@@ -18,8 +18,8 @@ public class MgrScene : EventBehaviour
 
 	void Awake()
     {
-		uiCamera = GameObject.Find ("UIRoot/UiCamera").GetComponent<Camera>();
-		battleCamera = GameObject.Find("BattleCamera").GetComponent<Camera>();
+        uiCamera = GameObject.Find("UIRoot/UICamera").GetComponent<Camera>();
+        //battleCamera = GameObject.Find("BattleCamera").GetComponent<Camera>();
 //		battleCamera.enabled = false;
         //float value = battleCamera.fieldOfView;
         //battleCamera.fieldOfView = 50 / DESIGN_RESOLUTION_SCALE;

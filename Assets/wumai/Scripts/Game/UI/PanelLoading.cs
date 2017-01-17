@@ -13,12 +13,10 @@ public class PanelLoading : PanelBase
 
 
     static PanelLoading m_inst = null;
-    public static PanelLoading getInstance()
+    public static void open()
     {
         if (m_inst == null)
             m_inst = new PanelLoading();
-
-        return m_inst;
     }
 
 
@@ -47,7 +45,7 @@ public class PanelLoading : PanelBase
     }
 
     Text m_text;
-    public override void onCreate(object arguments)
+    public override void onBuild(object arguments)
     {
         m_text = transform.FindChild("Text").GetComponent<Text>();
         m_text.text = "0%";

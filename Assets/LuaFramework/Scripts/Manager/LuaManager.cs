@@ -120,6 +120,13 @@ namespace LuaFramework {
             return null;
         }
 
+
+        public LuaFunction GetLuaFunction(string funcName)
+        {
+            return lua.GetFunction(funcName);
+        }
+
+
         public void LuaGC() {
             lua.LuaGC(LuaGCOptions.LUA_GCCOLLECT);
         }
