@@ -10,20 +10,26 @@ public class DbLoader
 
     private static bool m_bInited = false;
     public delegate DbBase CreateDbItem();
-    private static void callInit<T>(LuaFunction initFunc, string name) where T : DbBase, new()
+    private static void callInit<T>(LuaFunction dataFunc, LuaFunction keysFunc, string name) where T : DbBase, new()
     {
-        CreateDbItem createFunc = () =>{return new T();};
-        initFunc.Call(name, createFunc);
+        var db = dataFunc.Call(name)[0] as LuaTable;
+        var keys = keysFunc.Call(name);
+        foreach (var key in keys){
+        var id = int.Parse(key.ToString());
+        var dataItem = db[id] as LuaTable;
+        var dbItem = new T();
+        dbItem.init(id, dataItem);}
     }
 
     public static void init()
     {
         if(m_bInited) return;
         var mgr = AppFacade.Instance.GetManager<LuaManager>(ManagerName.Lua);
-        var tb = mgr.DoFile("Game/Common/DbLoader")[0] as LuaTable;
-        var luaInitFunc = tb["init"] as LuaFunction;
-
-        callInit<role_db>(luaInitFunc, "role_db");
+        var mgrCfg = mgr.DoFile("Manager/MgrCfg")[0] as LuaTable;
+        var dataFunc = mgrCfg.GetLuaFunction("getData");
+        var keysFunc = mgrCfg.GetLuaFunction("getKeys");
+        
+        callInit<role_db>(dataFunc, keysFunc, "role_db");
         
         m_bInited = true;
     }

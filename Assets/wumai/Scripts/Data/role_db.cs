@@ -18,17 +18,18 @@ public class role_db : DbBase
 
 
     private static Dictionary<int, role_db> m_allData = new Dictionary<int,role_db>();
-    public override void init(int a, LuaTable data)
+    public override void init(int id, LuaTable data)
     {
-        id = (int)data["id"];
-        name = (string)data["name"];
-        icon = (string)data["icon"];
-        quality = (string)data["quality"];
-        attr = (string)data["attr"];
-        order = (int)data["order"];
-        upId = (string)data["upId"];
-        heigh = (float)data["heigh"];
-        isHero = (bool)data["isHero"];
+        this.id = int.Parse(data["id"].ToString());
+        this.name = (string)data["name"];
+        this.icon = (string)data["icon"];
+        this.quality = (string)data["quality"];
+        this.attr = (string)data["attr"];
+        this.order = int.Parse(data["order"].ToString());
+        this.upId = (string)data["upId"];
+        this.heigh = float.Parse(data["heigh"].ToString());
+        this.isHero = bool.Parse(data["isHero"].ToString());
+        m_allData.Add(id, this);
     }
 
     public static role_db get(int key)

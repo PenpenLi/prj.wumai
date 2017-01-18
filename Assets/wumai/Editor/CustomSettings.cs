@@ -120,8 +120,6 @@ public static class CustomSettings
         _GT(typeof(Tools)),
         _GT(typeof(NotiConst)),
 
-        _GT(typeof(DbBase)),
-    
     };
 
     public static List<Type> dynamicList = new List<Type>()

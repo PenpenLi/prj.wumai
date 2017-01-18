@@ -1,3 +1,4 @@
+require "Common/import"
 require "Game/Common/import"
 
 local MyApp = class( "MyApp" )
@@ -32,8 +33,6 @@ end
 
 function MyApp:initGame()
 	math.randomseed(os.time())
-
-	MgrCfg:load()
 	
 	MgrPanel:setViewRoots( "Game.UI" )
 	ModuleLoader.init()

@@ -7,9 +7,13 @@ function Main.main()
 	-- Main.startUpdater()
 end
 
+
 -- 开启更新器
 function Main.startUpdater()
-	require "Common/import"
+	require "Util/StringEx"
+	require "Common/define"
+	require "Common/functions"
+
 	local unloadModules = {
 		"FileLoader",
 		"Updater",

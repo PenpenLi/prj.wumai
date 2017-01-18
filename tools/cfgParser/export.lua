@@ -75,17 +75,23 @@ xpcall(
 		dbLoader:addUsing("LuaInterface")
 		dbLoader:addCustom("private static bool m_bInited = false;")
 		dbLoader:addCustom("public delegate DbBase CreateDbItem();")
-		dbLoader:startFunction("private static void callInit<T>(LuaFunction initFunc, string name) where T : DbBase, new()")
-		dbLoader:addFuncContent("CreateDbItem createFunc = () =>{return new T();};")
-		dbLoader:addFuncContent("initFunc.Call(name, createFunc);")
+		dbLoader:startFunction("private static void callInit<T>(LuaFunction dataFunc, LuaFunction keysFunc, string name) where T : DbBase, new()")
+		dbLoader:addFuncContent("var db = dataFunc.Call(name)[0] as LuaTable;")
+		dbLoader:addFuncContent("var keys = keysFunc.Call(name);")
+		dbLoader:addFuncContent("foreach (var key in keys){")
+		dbLoader:addFuncContent("var id = int.Parse(key.ToString());")
+		dbLoader:addFuncContent("var dataItem = db[id] as LuaTable;")
+		dbLoader:addFuncContent("var dbItem = new T();")
+		dbLoader:addFuncContent("dbItem.init(id, dataItem);}")
 		dbLoader:endFunction()
 
 		dbLoader:startFunction("public static void init()")
 		dbLoader:addFuncContent("if(m_bInited) return;")
 		dbLoader:addFuncContent("var mgr = AppFacade.Instance.GetManager<LuaManager>(ManagerName.Lua);")
-		dbLoader:addFuncContent("var tb = mgr.DoFile(\"Game/Common/DbLoader\")[0] as LuaTable;")
-		dbLoader:addFuncContent("var luaInitFunc = tb[\"init\"] as LuaFunction;\n")
-
+		dbLoader:addFuncContent("var mgrCfg = mgr.DoFile(\"Manager/MgrCfg\")[0] as LuaTable;")
+		dbLoader:addFuncContent("var dataFunc = mgrCfg.GetLuaFunction(\"getData\");")
+		dbLoader:addFuncContent("var keysFunc = mgrCfg.GetLuaFunction(\"getKeys\");")
+		dbLoader:addFuncContent("")
 
 		for name, _ in pairs(dbCfg) do
 			
@@ -93,7 +99,7 @@ xpcall(
 			package.loaded[name] = nil
 			data = require(name)
 
-			dbLoader:addFuncContent(string.format("callInit<%s>(luaInitFunc, \"%s\");", name, name))
+			dbLoader:addFuncContent(string.format("callInit<%s>(dataFunc, keysFunc, \"%s\");", name, name))
 
 			local types, fields = data.types, data.fields
 
@@ -104,28 +110,29 @@ xpcall(
 			cs:addUsing("System.Collections.Generic")
 			cs:addCustom(string.format("private static Dictionary<int, %s> m_allData = new Dictionary<int,%s>();", name, name))
 
-			cs:startFunction("public override void init(int a, LuaTable data)")
+			cs:startFunction("public override void init(int id, LuaTable data)")
 
 			local key
 			for idx, fType in ipairs(types) do
 				key = fields[idx]
 				if fType == "S" then
 					cs:addStringField(key)
-					cs:addFuncContent(string.format("%s = (string)data[\"%s\"];", key, key))
+					cs:addFuncContent(string.format("this.%s = (string)data[\"%s\"];", key, key))
 				elseif fType == "I" then
 					cs:addIntField(key)
-					cs:addFuncContent(string.format("%s = (int)data[\"%s\"];", key, key))
+					cs:addFuncContent(string.format("this.%s = int.Parse(data[\"%s\"].ToString());", key, key))
 				elseif fType == "F" then
 					cs:addFloatField(key)
-					cs:addFuncContent(string.format("%s = (float)data[\"%s\"];", key, key))
+					cs:addFuncContent(string.format("this.%s = float.Parse(data[\"%s\"].ToString());", key, key))
 				elseif fType == "B" then
 					cs:addBoolField(key)
-					cs:addFuncContent(string.format("%s = (bool)data[\"%s\"];", key, key))
+					cs:addFuncContent(string.format("this.%s = bool.Parse(data[\"%s\"].ToString());", key, key))
 				else
 					print(string.format("can't find type %s by key %s", fType, key))
 				end
 			end
 
+			cs:addFuncContent("m_allData.Add(id, this);")
 			cs:endFunction()
 
     		cs:startFunction(string.format("public static %s get(int key)", name))
@@ -133,7 +140,6 @@ xpcall(
     		cs:addFuncContent("m_allData.TryGetValue(key, out db);")
     		cs:addFuncContent("return db;")
     		cs:endFunction()
-
 
 			cs:save(CS_PATH .. name .. ".cs")
 		end
