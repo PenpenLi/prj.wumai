@@ -3,12 +3,11 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using GameFramework;
-using System;
 
 
 
 
-public class PanelLoading : PanelBase
+public class PanelLoading
 {
 
 
@@ -20,45 +19,32 @@ public class PanelLoading : PanelBase
     }
 
 
-    public override void dispose()
-    {
-        base.dispose();
-        m_inst = null;
-    }
-
-
-    public override int getLayer()
-    {
-        return MgrPanel.LAYER_UI;
-    }
-
-
-    public override int getStyle()
-    {
-        return MgrPanel.STYLE_COMMON;
-    }
-
-
-    public override string getAssetBundleName()
-    {
-        return "UI/PanelLoading/prefab";
-    }
-
     Text m_text;
-    public override void onBuild(object arguments)
-    {
-        m_text = transform.FindChild("Text").GetComponent<Text>();
-        m_text.text = "0%";
+    UnityEngine.UI.Image m_progress;
+    EventHandler m_eventHandler;
+    GameObject gameObject;
 
-        //addEventCallback(EventId.UI_CLOSE_LOADING, onClose);
-        //addEventCallback(EventId.UI_UPDATE_LOADING, onUpdate);
-        //startProcMsg();
+
+    private PanelLoading()
+    {
+        GameObject prefab = Resources.Load<GameObject>("panelLoading");
+        gameObject = GameObject.Instantiate(prefab);
+
+        m_text = gameObject.transform.FindChild("Text").GetComponent<Text>();
+        m_text.text = "0%";
+        m_progress = gameObject.transform.FindChild("Image/Image").GetComponent<UnityEngine.UI.Image>();
+
+        m_progress.fillAmount = 0;
+
+        m_eventHandler.addEventCallback(EventId.UI_CLOSE_LOADING, onClose);
+        m_eventHandler.addEventCallback(EventId.UI_UPDATE_LOADING, onUpdate);
+        m_eventHandler.startProcMsg();
     }
 
 
     public void onClose(GameEvent e)
     {
-        close();
+        gameObject.SetActive(false);
     }
 
 
@@ -69,20 +55,11 @@ public class PanelLoading : PanelBase
         if (p >= 1)
         {
             m_text.text = "100%";
-            MgrTimer.callLaterTime(0, closeLater);
+            //MgrTimer.callLaterTime(0, closeLater);
         }
         else
         {
             m_text.text = Mathf.FloorToInt(p * 100) + "%";
-        }
-    }
-
-
-    public void closeLater(object obj)
-    {
-        if (m_inst != null)
-        {
-            close();
         }
     }
 

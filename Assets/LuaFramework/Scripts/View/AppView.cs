@@ -6,7 +6,7 @@ public class AppView : View {
     private string message;
     public GameObject panel = null;
     public UnityEngine.UI.Text text = null;
-	public UnityEngine.UI.Slider progress = null;
+    public UnityEngine.UI.Image progress = null;
 
     ///<summary>
     /// 监听的消息
@@ -65,7 +65,6 @@ public class AppView : View {
         panel = GameObject.FindWithTag( name );
         if( panel != null ) return;
         
-
         GameObject prefab = ResourceManager.ResourceLoad( name ) as GameObject;
         panel = Instantiate( prefab ) as GameObject;
 
@@ -80,12 +79,11 @@ public class AppView : View {
 			text = panel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
 			text.text = data;
 		}
-        
-		if(panel.transform.FindChild("Progress") != null) {
-			progress = panel.transform.FindChild("Progress").GetComponent<UnityEngine.UI.Slider>();
-		}
 
-        //UpdateExtract(data);
+        if (panel.transform.FindChild("Image/Image") != null)
+        {
+            progress = panel.transform.FindChild("Image/Image").GetComponent<UnityEngine.UI.Image>();
+		}
     }
 
 
@@ -106,7 +104,7 @@ public class AppView : View {
 
 		float value = float.Parse( msg );
 
-		progress.value = value;
+        progress.fillAmount = value;
     }
 
     public void LoadingEnd() {

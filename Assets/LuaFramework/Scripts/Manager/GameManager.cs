@@ -306,10 +306,13 @@ namespace LuaFramework {
             //NetManager.OnInit();                        //初始化网络
             Util.CallMethod("Main", "main");            //初始化完成
 
+            // 初始化数据db
             DbLoader.init();
 
-            //gameObject.AddComponent<MgrScene>();
-            //gameObject.AddComponent<MgrPanel>();
+            // 初始化mgr
+            gameObject.AddComponent<MgrScene>();
+            gameObject.AddComponent<MgrPanel>();
+            gameObject.AddComponent<MgrTimer>();
         }
 
 

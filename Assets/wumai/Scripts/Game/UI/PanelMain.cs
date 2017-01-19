@@ -44,8 +44,8 @@ public class PanelMain : PanelBase
 
     public override void onBuild(object arguments)
     {
-        transform.FindChild("BtnJoin").GetComponent<Button>().onClick.AddListener(onClickJoin);
-        transform.FindChild("BtnCreate").GetComponent<Button>().onClick.AddListener(onClickCreate);
+        UITools.addButtonClickListener(transform.FindChild("BtnJoin"), onClickJoin);
+        UITools.addButtonClickListener(transform.FindChild("BtnCreate"), onClickCreate);
     }
 
 
@@ -57,14 +57,17 @@ public class PanelMain : PanelBase
 
     void onClickCreate()
     {
-        List<string> list = new List<string>();
-        list.Add("1 Vs 1");
-        list.Add("2 Vs 2");
-        list.Add("3 Vs 3");
-        list.Add("4 Vs 4");
-        list.Add("5 Vs 5");
+        //List<string> list = new List<string>();
+        //list.Add("1 Vs 1");
+        //list.Add("2 Vs 2");
+        //list.Add("3 Vs 3");
+        //list.Add("4 Vs 4");
+        //list.Add("5 Vs 5");
 
-        MgrPanel.openOption(list, onClickOption);
+        //MgrPanel.openOption(list, onClickOption);
+
+        PanelLoading.open();
+        MgrScene.openNextScene(new SceneBattle());
     }
 
 

@@ -123,7 +123,7 @@ namespace GameFramework
             //});
             foreach (var pair in m_events)
             {
-                EventDispatcher.getGlobalInstance().addListener(pair.Key, pair.Value);
+                EventDispatcher.getInstance().addListener(pair.Key, pair.Value);
             }
         }
 
@@ -154,7 +154,7 @@ namespace GameFramework
     {
 
         private static EventDispatcher inst = new EventDispatcher();
-        public static EventDispatcher getGlobalInstance(){return inst;}
+        public static EventDispatcher getInstance(){return inst;}
         
 
 

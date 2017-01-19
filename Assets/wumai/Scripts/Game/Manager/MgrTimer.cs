@@ -43,7 +43,7 @@ public class MgrTimer : EventBehaviour
     {
         try
         {
-            EventDispatcher.getGlobalInstance().procUiEvent();
+            EventDispatcher.getInstance().procUiEvent();
             var curTime = Tools.getCurTime();
             var node = m_list.First;
 

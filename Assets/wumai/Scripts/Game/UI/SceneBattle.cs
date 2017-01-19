@@ -3,19 +3,19 @@ using System.Collections;
 using GameFramework;
 
 
+public class SceneBattle : SceneBase
+{
+    public override void onEnter()
+    {
+        Tools.Log("enter SceneBattle.");
 
-public class SceneMain : SceneBase {
-	public override void onEnter ()
-	{
-        Tools.Log("enter SceneMain.");
-        
         //addEventCallback(EventId.MSG_GAME_OVER, onGameOver);
         startProcMsg();
 
-
-        PanelMain.open();
+        //PanelMain.open();
+        new PanelBattle();
         EventDispatcher.getInstance().dispatchEvent(EventId.UI_CLOSE_LOADING);
-	}
+    }
 
 
     void onStartGame(GameEvent e)
@@ -29,5 +29,5 @@ public class SceneMain : SceneBase {
     public override void onLeave()
     {
         stopProcMsg();
-	}
+    }
 }
