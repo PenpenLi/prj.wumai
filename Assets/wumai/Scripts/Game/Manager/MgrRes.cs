@@ -37,6 +37,7 @@ public class MgrRes
 
     public static void loadPrefab(string assetBundleKey, string assetName, Action<UObject> callback, bool fullPath = false)
     {
+        //Tools.Log("loadPrefab:" + assetBundleKey);
         if (callback == null)
             callback = obj => { };
 
@@ -156,6 +157,19 @@ public class MgrRes
         }
     }
 
-    
+
+    public static bool loadReferencedPrefab(string assetBundleKey)
+    {
+        var objectCacheKey = getObjectCacheKey(assetBundleKey, null);
+        ObjectRef resObject;
+        if (OBJECT_CACHE.TryGetValue(objectCacheKey, out resObject))
+        {
+            resObject.referencedCount++;
+            return true;
+        }
+
+        return false;
+
+    }
 
 }

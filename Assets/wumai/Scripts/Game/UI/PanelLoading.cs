@@ -16,6 +16,10 @@ public class PanelLoading
     {
         if (m_inst == null)
             m_inst = new PanelLoading();
+        else
+            m_inst.gameObject.SetActive(true);
+
+        m_inst.transform.SetSiblingIndex(m_inst.transform.parent.childCount);
     }
 
 
@@ -23,22 +27,27 @@ public class PanelLoading
     UnityEngine.UI.Image m_progress;
     EventHandler m_eventHandler;
     GameObject gameObject;
+    Transform transform;
 
 
     private PanelLoading()
     {
         GameObject prefab = Resources.Load<GameObject>("panelLoading");
         gameObject = GameObject.Instantiate(prefab);
+        transform = gameObject.transform;
 
-        m_text = gameObject.transform.FindChild("Text").GetComponent<Text>();
+        m_text = transform.FindChild("Text").GetComponent<Text>();
         m_text.text = "0%";
-        m_progress = gameObject.transform.FindChild("Image/Image").GetComponent<UnityEngine.UI.Image>();
+        m_progress = transform.FindChild("Image/Image").GetComponent<UnityEngine.UI.Image>();
 
         m_progress.fillAmount = 0;
 
+        m_eventHandler = new EventHandler();
         m_eventHandler.addEventCallback(EventId.UI_CLOSE_LOADING, onClose);
         m_eventHandler.addEventCallback(EventId.UI_UPDATE_LOADING, onUpdate);
         m_eventHandler.startProcMsg();
+
+        transform.SetParent(GameObject.FindWithTag("Canvas").transform, false);
     }
 
 

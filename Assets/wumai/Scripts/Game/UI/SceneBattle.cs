@@ -5,6 +5,22 @@ using GameFramework;
 
 public class SceneBattle : SceneBase
 {
+    string[] m_resList = {
+         "UI/PanelBattle/prefab",
+         "UI/PanelDialog/prefab",
+         "Map/Map/prefab",
+         "Map/Tile/prefab"
+                         };
+
+    public override string[] getResList()
+    {
+        return m_resList;
+    }
+
+
+    
+    GameMap m_gameMap;
+
     public override void onEnter()
     {
         Tools.Log("enter SceneBattle.");
@@ -14,6 +30,8 @@ public class SceneBattle : SceneBase
 
         //PanelMain.open();
         new PanelBattle();
+        m_gameMap = new GameMap();
+        
         EventDispatcher.getInstance().dispatchEvent(EventId.UI_CLOSE_LOADING);
     }
 
@@ -29,5 +47,6 @@ public class SceneBattle : SceneBase
     public override void onLeave()
     {
         stopProcMsg();
+        m_gameMap.dispose();
     }
 }

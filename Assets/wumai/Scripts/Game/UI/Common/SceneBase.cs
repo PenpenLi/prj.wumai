@@ -15,4 +15,7 @@ public abstract class SceneBase : EventHandler {
 	public virtual void onLeave(){
         stopProcMsg();
 	}
+
+
+    public abstract string[] getResList();
 }

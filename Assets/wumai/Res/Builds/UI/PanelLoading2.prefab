@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 224000013268079940}
   m_Layer: 0
-  m_Name: PanelLoading
+  m_Name: PanelLoading2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

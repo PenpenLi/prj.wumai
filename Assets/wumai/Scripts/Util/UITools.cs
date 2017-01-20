@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System;
 
 
 public class UITools
@@ -9,5 +8,21 @@ public class UITools
     public static void addButtonClickListener(Transform tr, UnityEngine.Events.UnityAction click)
     {
         tr.GetComponent<Button>().onClick.AddListener(click);
+    }
+
+
+    // 由于异步加载，暂时只支持包含从ResObject来的sprite替换，以判断transform是否还有效
+    public static void setSpriteForContainer<T>(Transform transform, string spriteName, ResObject container) where T : Image, SpriteRenderer
+    {
+        T img = transform.GetComponent<T>();
+        if (img == null || container == null || container.isDisposed()) return;
+        var objs = spriteName.Split('/');
+        MgrRes.loadPrefab(objs[0], objs[1], obj =>
+        {
+            if (container.isDisposed())
+                return;
+
+            img.sprite = obj as Sprite;
+        }, true);
     }
 }

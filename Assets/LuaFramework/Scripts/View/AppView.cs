@@ -61,29 +61,29 @@ public class AppView : View {
 
 
     public void LoadingStart(string data) {
-        string name = "PanelLoading";
-        panel = GameObject.FindWithTag( name );
-        if( panel != null ) return;
+        //string name = "PanelLoading";
+        //panel = GameObject.FindWithTag( name );
+        //if( panel != null ) return;
         
-        GameObject prefab = ResourceManager.ResourceLoad( name ) as GameObject;
-        panel = Instantiate( prefab ) as GameObject;
+        //GameObject prefab = ResourceManager.ResourceLoad( name ) as GameObject;
+        //panel = Instantiate( prefab ) as GameObject;
 
-        GameObject go = GameObject.FindWithTag("Canvas");
-        if( go != null )
-            //panel.transform.parent = go.transform;
-            panel.transform.SetParent(go.transform, false);
-        //panel.transform.localPosition = Vector3.zero;
-        //panel.transform.localScale = Vector3.one;
-        panel.name = name;
-		if(panel.transform.FindChild("Text") != null) {
-			text = panel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
-			text.text = data;
-		}
+        //GameObject go = GameObject.FindWithTag("Canvas");
+        //if( go != null )
+        //    //panel.transform.parent = go.transform;
+        //    panel.transform.SetParent(go.transform, false);
+        ////panel.transform.localPosition = Vector3.zero;
+        ////panel.transform.localScale = Vector3.one;
+        //panel.name = name;
+        //if(panel.transform.FindChild("Text") != null) {
+        //    text = panel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        //    text.text = data;
+        //}
 
-        if (panel.transform.FindChild("Image/Image") != null)
-        {
-            progress = panel.transform.FindChild("Image/Image").GetComponent<UnityEngine.UI.Image>();
-		}
+        //if (panel.transform.FindChild("Image/Image") != null)
+        //{
+        //    progress = panel.transform.FindChild("Image/Image").GetComponent<UnityEngine.UI.Image>();
+        //}
     }
 
 

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using LuaFramework;
+
 
 public class MgrScene : EventBehaviour
 {
@@ -15,6 +17,8 @@ public class MgrScene : EventBehaviour
     public static float DESIGN_RESOLUTION_SCALE = ((float)Screen.width / Screen.height) / (DESIGN_RESOLUTION_WIDTH / DESIGN_RESOLUTION_HEIGHT);
 
 
+    private static bool m_busy = false;
+
 	void Awake()
     {
         uiCamera = GameObject.Find("UIRoot/UICamera").GetComponent<Camera>();
@@ -27,6 +31,8 @@ public class MgrScene : EventBehaviour
 
 
 	static SceneBase m_curScene;
+    static SceneBase m_nextScene;
+
 	void Start ()
     {
         openNextScene(new SceneMain());
@@ -45,14 +51,45 @@ public class MgrScene : EventBehaviour
 
     public static void openNextScene(SceneBase scene)
     {
+        Tools.Log("===> openNextScene!");
+        if (m_busy)
+        {
+            Tools.Log("next scene is busy now!");
+            return;
+        }
+        //MgrPanel.disposeAllPanel();
+
         if (m_curScene != null)
+        {
+            MgrResLoader.insertRemoving(m_curScene.getResList());
             m_curScene.onLeave();
+            m_curScene = null;
+        }
+
+        m_busy = true;
+        PanelLoading.open();
+
+        MgrResLoader.insertLoading(scene.getResList());
+        m_nextScene = scene;
 
         MgrPanel.disposeAllPanel();
+        MgrRes.clearObjectCacheAll();
+        Util.ClearMemory();
 
-        m_curScene = scene;
-        m_curScene.onEnter();
+        MgrResLoader.start(executeSceneDown);
     }
+
+
+    static void executeSceneDown()
+    {
+        m_curScene = m_nextScene;
+        m_nextScene = null;
+        m_busy = false;
+        m_curScene.onEnter();
+
+        Tools.Log("enter executeSceneDown.");
+    }
+
 
 	// Update is called once per frame
 	void Update ()

@@ -5,6 +5,19 @@ using GameFramework;
 
 
 public class SceneMain : SceneBase {
+
+
+    string[] m_resList = {
+         "UI/PanelMain/prefab",
+         "UI/PanelDialog/prefab",
+                         };
+
+    public override string[] getResList()
+    {
+        return m_resList;
+    }
+
+
 	public override void onEnter ()
 	{
         Tools.Log("enter SceneMain.");
@@ -12,9 +25,8 @@ public class SceneMain : SceneBase {
         //addEventCallback(EventId.MSG_GAME_OVER, onGameOver);
         startProcMsg();
 
-
         PanelMain.open();
-        EventDispatcher.getInstance().dispatchEvent(EventId.UI_CLOSE_LOADING);
+        //EventDispatcher.getInstance().dispatchEvent(EventId.UI_CLOSE_LOADING);
 	}
 
 

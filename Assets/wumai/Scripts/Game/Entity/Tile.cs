@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
+
 
 public class Tile : GameUnit
 {
@@ -10,7 +11,20 @@ public class Tile : GameUnit
     }
 
 
+
+    public Tile(int level) : base(level) { }
+
+
+    private SpriteRenderer m_spriteRenderer;
     public override void onCreate(object arguments)
     {
+        int level = (int)arguments;
+
+        m_spriteRenderer = transform.GetComponent<SpriteRenderer>();
+
+        if (level != 1)
+        {
+            UITools.setSpriteForContainer(transform, "Image/tile" + level, this);
+        }
     }
 }

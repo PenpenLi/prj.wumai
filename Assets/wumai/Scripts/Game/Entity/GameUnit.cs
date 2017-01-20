@@ -8,6 +8,15 @@ using System.Collections;
 public abstract class GameUnit : ResObject
 {
 
+
+    public GameUnit() { }
+
+    public GameUnit(object arguments) : base(arguments, null) { }
+
+    public GameUnit(object arguments, System.Action<ResObject> callback) : base(arguments, callback) { }
+
+
+
     public void setPosition(float x, float y)
     {
         Vector3 pos = new Vector3(x, y, y / 100);
