@@ -136,8 +136,9 @@ public class MgrPanel : EventBehaviour
     }
 
 
-    public override void onDestory()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
         disposeAllPanel();
     }
 

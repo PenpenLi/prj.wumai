@@ -25,9 +25,6 @@ public class MgrScene : EventBehaviour
 	}
 
 
-    public override void onDestory()
-    {
-    }
 
 
 	static SceneBase m_curScene;
@@ -40,8 +37,9 @@ public class MgrScene : EventBehaviour
 	}
 
 
-    void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
         if (m_curScene != null)
             m_curScene.onLeave();
 

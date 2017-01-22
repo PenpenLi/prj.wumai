@@ -16,6 +16,8 @@ public class Tile : GameUnit
 
 
     private SpriteRenderer m_spriteRenderer;
+    public int level = 0;
+
     public override void onCreate(object arguments)
     {
         int level = (int)arguments;
@@ -24,7 +26,9 @@ public class Tile : GameUnit
 
         if (level != 1)
         {
-            UITools.setSpriteForContainer(transform, "Image/tile" + level, this);
+            UITools.setSpriteForContainer(m_spriteRenderer, "Image/tile" + level, this);
         }
+
+        this.level = level;
     }
 }

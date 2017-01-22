@@ -19,13 +19,23 @@ public class GameMap : GameUnit {
     {
         m_camera = transform.FindChild("Camera").GetComponent<Camera>();
 
-        var m_mapInfo = arguments as int[][];
-        
+        var mapInfo = arguments as int[][];
+
+        if (mapInfo == null)
+            mapInfo = getRandomMapInfo();
+
+        m_camera.transform.localPosition = new Vector3(0, mapInfo[0].Length / 2f * 0.7f, 0);
+        createTiles(mapInfo);
+    }
+
+
+    int[][] getRandomMapInfo()
+    {
         // 随机一个地图
         int row = 20;
         int col = 20;
 
-        m_mapInfo = new int[row][];
+        int[][] mapInfo = new int[row][];
         for (int i = 0; i < row; i++)
         {
             int[] datas = new int[col];
@@ -33,10 +43,10 @@ public class GameMap : GameUnit {
             {
                 datas[j] = Tools.Random(1, 4);
             }
-            m_mapInfo[i] = datas;
+            mapInfo[i] = datas;
         }
 
-        createTiles(m_mapInfo);
+        return mapInfo;
     }
 
 
@@ -53,7 +63,11 @@ public class GameMap : GameUnit {
             {
                 ts[j] = new Tile(info[j]);
                 ts[j].setParent(transform);
-                ts[j].setPosition(j, i, row + 1);
+
+                float x = j * 0.5f - i * 0.5f;
+                float y = j * 0.5f * 0.7f + i * 0.5f * 0.7f;
+
+                ts[j].setPosition(x, y, row * 0.5f + 1);
             }
 
             m_tiles[i] = ts;

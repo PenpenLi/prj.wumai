@@ -27,19 +27,8 @@ public abstract class EventBehaviour : MonoBehaviour {
     }
 
 
-    void OnDestroy()
+    public virtual void OnDestroy()
     {
         stopProcMsg();
-        onDestory();
     }
-
-
-    public abstract void onDestory();
-
-
-    //public virtual void onDestory()
-    //{
-    //    // 强制隐藏该方法
-    //    Tools.LogError("you must check onDestory, it's importent.");
-    //}
 }

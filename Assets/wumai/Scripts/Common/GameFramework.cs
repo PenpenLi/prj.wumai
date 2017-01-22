@@ -10,7 +10,6 @@ namespace GameFramework
 
         private object m_data = null;
         private bool m_stop = false;
-        private string aaa = null;
 
         public GameEvent()
         {
