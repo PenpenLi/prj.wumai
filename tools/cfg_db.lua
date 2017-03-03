@@ -20,6 +20,7 @@
 
 local loader = {
 	["role_db"] = { mode = "m" },
+	["product_db"] = { mode = "m" },
 }
 
 

@@ -121,8 +121,7 @@ namespace ICSharpCode.SharpZipLib.Core
                     }
                 }
 			}
-			catch (ArgumentException)
-            {
+			catch (ArgumentException) {
 				result = false;
 			}
 

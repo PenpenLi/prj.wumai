@@ -15,10 +15,8 @@ public class DbLoader
         var db = dataFunc.Call(name)[0] as LuaTable;
         var keys = keysFunc.Call(name);
         foreach (var key in keys){
-        var id = int.Parse(key.ToString());
-        var dataItem = db[id] as LuaTable;
         var dbItem = new T();
-        dbItem.init(id, dataItem);}
+        dbItem.init(key.ToString(), db);}
     }
 
     public static void init()
@@ -29,6 +27,7 @@ public class DbLoader
         var dataFunc = mgrCfg.GetLuaFunction("getData");
         var keysFunc = mgrCfg.GetLuaFunction("getKeys");
         
+        callInit<product_db>(dataFunc, keysFunc, "product_db");
         callInit<role_db>(dataFunc, keysFunc, "role_db");
         
         m_bInited = true;

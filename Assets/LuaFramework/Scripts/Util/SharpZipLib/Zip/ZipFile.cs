@@ -3146,7 +3146,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// total number of disks 4 bytes 
 				ReadLEUint(); // startDisk64 is not currently used
 				ulong offset64 = ReadLEUlong();
-                ReadLEUint();  // not cur use    uint totalDisks
+				ReadLEUint();	//uint totalDisks
 
 				baseStream_.Position = (long)offset64;
 				long sig64 = ReadLEUint();
@@ -3156,13 +3156,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				// NOTE: Record size = SizeOfFixedFields + SizeOfVariableData - 12.
-                ReadLEUlong();  // not use cur     ulong recordSize
-                ReadLEUshort(); // not cur use     int versionMadeBy
-                ReadLEUshort();// not cur use     int versionToExtract
-                ReadLEUint();// not cur use     int thisDisk
-                ReadLEUint();// not cur use     uint centralDirDisk
+				ReadLEUlong();	//ulong recordSize
+				ReadLEUshort();	//int versionMadeBy
+				ReadLEUshort();	//int versionToExtract
+				ReadLEUint();	//uint thisDisk
+				ReadLEUint();	//uint centralDirDisk
+
 				entriesForThisDisk = ReadLEUlong();
-				entriesForWholeCentralDir = ReadLEUlong();
+				ReadLEUlong();	//entriesForWholeCentralDir
 				centralDirSize = ReadLEUlong();
 				offsetOfCentralDir = (long)ReadLEUlong();
 
@@ -3202,9 +3203,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				int nameLen            = ReadLEUshort();
 				int extraLen           = ReadLEUshort();
 				int commentLen         = ReadLEUshort();
-
-                ReadLEUshort();  // Not currently used   int diskStartNo
-                ReadLEUshort();  // Not currently used   int internalAttributes
+				
+				ReadLEUshort();  // Not currently used	int diskStartNo
+				ReadLEUshort();  // Not currently used	int internalAttributes
 
 				uint externalAttributes = ReadLEUint();
 				long offset             = ReadLEUint();

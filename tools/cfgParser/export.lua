@@ -79,10 +79,10 @@ xpcall(
 		dbLoader:addFuncContent("var db = dataFunc.Call(name)[0] as LuaTable;")
 		dbLoader:addFuncContent("var keys = keysFunc.Call(name);")
 		dbLoader:addFuncContent("foreach (var key in keys){")
-		dbLoader:addFuncContent("var id = int.Parse(key.ToString());")
-		dbLoader:addFuncContent("var dataItem = db[id] as LuaTable;")
+		-- dbLoader:addFuncContent("var id = int.Parse(key.ToString());")
+		-- dbLoader:addFuncContent("var dataItem = db[id] as LuaTable;")
 		dbLoader:addFuncContent("var dbItem = new T();")
-		dbLoader:addFuncContent("dbItem.init(id, dataItem);}")
+		dbLoader:addFuncContent("dbItem.init(key.ToString(), db);}")
 		dbLoader:endFunction()
 
 		dbLoader:startFunction("public static void init()")
@@ -102,15 +102,26 @@ xpcall(
 			dbLoader:addFuncContent(string.format("callInit<%s>(dataFunc, keysFunc, \"%s\");", name, name))
 
 			local types, fields = data.types, data.fields
+			local idType = types[1] == "I" and "int" or "string"
 
 			local cs = CSClass.New()
 			-- cs:addNameSpace("Game")
 			cs:addClassName(string.format("%s : DbBase", name))
 			cs:addUsing("LuaInterface")
 			cs:addUsing("System.Collections.Generic")
-			cs:addCustom(string.format("private static Dictionary<int, %s> m_allData = new Dictionary<int,%s>();", name, name))
 
-			cs:startFunction("public override void init(int id, LuaTable data)")
+			cs:addCustom(string.format("private static Dictionary<%s, %s> m_allData = new Dictionary<%s, %s>();", idType, name, idType, name))
+			cs:startFunction("public override void init(string id, LuaTable db)")
+
+
+			if idType == "int" then
+				cs:addFuncContent("var key = int.Parse(id);")
+			else
+				cs:addFuncContent("var key = id;")
+			end	
+
+			cs:addFuncContent("var data = db[key] as LuaTable;");
+
 
 			local key
 			for idx, fType in ipairs(types) do
@@ -132,22 +143,29 @@ xpcall(
 				end
 			end
 
-			cs:addFuncContent("m_allData.Add(id, this);")
+			cs:addFuncContent(string.format("m_allData.Add(this.%s, this);", fields[1]))
 			cs:endFunction()
 
-    		cs:startFunction(string.format("public static %s get(int key)", name))
-    		cs:addFuncContent(string.format("%s db;", name))
-    		cs:addFuncContent("m_allData.TryGetValue(key, out db);")
-    		cs:addFuncContent("return db;")
-    		cs:endFunction()
+			cs:startFunction(string.format("public %s this[%s key]", name, idType))
+			cs:addFuncContent("get{")
+			cs:addFuncContent(string.format("%s db;", name))
+			cs:addFuncContent("m_allData.TryGetValue(key, out db);")
+			cs:addFuncContent("return db;}")
+			cs:endFunction()
+			
+			-- cs:startFunction(string.format("public static %s get(int key)", name))
+			-- cs:addFuncContent(string.format("%s db;", name))
+			-- cs:addFuncContent("m_allData.TryGetValue(key, out db);")
+			-- cs:addFuncContent("return db;")
+			-- cs:endFunction()
 
 			cs:save(CS_PATH .. name .. ".cs")
 		end
-    	
-    	dbLoader:addFuncContent("")
-    	dbLoader:addFuncContent("m_bInited = true;")
-    	dbLoader:endFunction()
-    	dbLoader:save(CS_PATH .. "DbLoader" .. ".cs")
+		
+		dbLoader:addFuncContent("")
+		dbLoader:addFuncContent("m_bInited = true;")
+		dbLoader:endFunction()
+		dbLoader:save(CS_PATH .. "DbLoader" .. ".cs")
 	end,
 	function (e)
 		print(e, debug.traceback())

@@ -10,11 +10,16 @@ public class Test : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         var l = gameObject.GetComponent<UIEventListener>();
-        l.OnPointerClick = onClick;
+        l.onClick = onClick;
 	}
 
 
-    void onClick(UnityEngine.EventSystems.PointerEventData e,)
+    void onClick(GameObject go, UnityEngine.EventSystems.PointerEventData e)
+    {
+        Debug.Log("----------- onClick.");
+    }
+
+
 
 
 	

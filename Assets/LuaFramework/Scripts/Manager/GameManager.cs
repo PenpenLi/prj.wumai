@@ -96,6 +96,9 @@ namespace LuaFramework {
             string aplicationMd5String = null;
             string persistentMd5String = null;
             
+            // 读取文件列表
+//            string aplicationFileListName = resPath + AppConst.FinalSingleFileInfo;
+
 
             //获取md5?
             //获取包外
@@ -133,6 +136,7 @@ namespace LuaFramework {
             int idx = 0;
             int curIndex = 0;
             int totalCount = buffer.ReadInt();
+            byte[] wwwByte = www.bytes;
             NotiConst.MsgProgress msgProgress;
 
             for (int i = 0; i < totalCount; i ++) {

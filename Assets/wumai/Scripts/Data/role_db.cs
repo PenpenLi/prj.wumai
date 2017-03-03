@@ -17,9 +17,11 @@ public class role_db : DbBase
     public bool isHero = false;
 
 
-    private static Dictionary<int, role_db> m_allData = new Dictionary<int,role_db>();
-    public override void init(int id, LuaTable data)
+    private static Dictionary<int, role_db> m_allData = new Dictionary<int, role_db>();
+    public override void init(string id, LuaTable db)
     {
+        var key = int.Parse(id);
+        var data = db[key] as LuaTable;
         this.id = int.Parse(data["id"].ToString());
         this.name = (string)data["name"];
         this.icon = (string)data["icon"];
@@ -29,14 +31,15 @@ public class role_db : DbBase
         this.upId = (string)data["upId"];
         this.heigh = float.Parse(data["heigh"].ToString());
         this.isHero = bool.Parse(data["isHero"].ToString());
-        m_allData.Add(id, this);
+        m_allData.Add(this.id, this);
     }
 
-    public static role_db get(int key)
+    public role_db this[int key]
     {
+        get{
         role_db db;
         m_allData.TryGetValue(key, out db);
-        return db;
+        return db;}
     }
 
 }

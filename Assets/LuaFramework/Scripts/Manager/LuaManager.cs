@@ -120,6 +120,10 @@ namespace LuaFramework {
             return null;
         }
 
+		public LuaTable GetLuaTable(string name){
+			return lua.GetTable(name);
+		}
+
 
         public LuaFunction GetLuaFunction(string funcName)
         {

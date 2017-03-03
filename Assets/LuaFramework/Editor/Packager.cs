@@ -6,6 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using LuaFramework;
+using Debug = UnityEngine.Debug;
+
 
 public class Packager {
     public static string platform = string.Empty;
@@ -87,9 +89,9 @@ public class Packager {
             HandleLuaFile();
         }
         string resPath = "Assets/" + AppConst.PublishAssetDir;
-        BuildAssetBundleOptions options = BuildAssetBundleOptions.DeterministicAssetBundle | 
+		BuildAssetBundleOptions options = BuildAssetBundleOptions.DeterministicAssetBundle; //| 
                                           //lz4格式压缩，减少解压时间，但是相应的会增加包体大小，如果需要极致小包，可将此开关关闭 MARK
-                                          BuildAssetBundleOptions.ChunkBasedCompression; 
+                                         // BuildAssetBundleOptions.ChunkBasedCompression; 
 
 
         //将设置好了的资源加入map列表
@@ -259,6 +261,7 @@ public class Packager {
         StreamWriter sw = new StreamWriter(fs);
         for (int i = 0; i < files.Count; i++) {
             string file = files[i];
+//            string ext = Path.GetExtension(file);
             if (file.EndsWith(".meta") || file.Contains(".DS_Store")) continue;
 
             string md5 = Util.md5file(file);
@@ -521,6 +524,9 @@ public class Packager {
 
         string path = GetSelectionPath();
         string directoryName = Path.GetFileName(path).ToLower();
+//        string splitName = AppConst.ResourceNameSplit;
+
+
 
         //
         AssetImporter importer = AssetImporter.GetAtPath(path);
@@ -575,23 +581,25 @@ public class Packager {
                 //BuildAssetBundleName(file, directoryName);
 
 
-				TextureImporterFormat format = TextureImporterFormat.AutomaticCompressed;
-#if UNITY_EDITOR_OSX
-				format = TextureImporterFormat.RGBA16;
-#elif UNITY_ANDROID
-				UnityEngine.Debug.Log("UNITY_ANDROID");
-#endif
-
                 //设置tag
-				if (texImp.spritePackingTag != directoryName || texImp.textureFormat != format)
+                if (texImp.spritePackingTag != directoryName)
                 {
                     texImp.textureType = TextureImporterType.Sprite;
                     texImp.mipmapEnabled = false;
                     texImp.spritePackingTag = directoryName;
+					texImp.textureCompression = TextureImporterCompression.Compressed;
 
-					texImp.textureFormat = format;
-//                    texImp.SetPlatformTextureSettings("iPhone", 1024, TextureImporterFormat.Automatic16bit);
-//                    texImp.SetPlatformTextureSettings("Android", 1024, TextureImporterFormat.AutomaticCompressed);
+					/*
+					TextureImporterPlatformSettings textureImporterPlatformSettings = new TextureImporterPlatformSettings();
+					textureImporterPlatformSettings.name = "iPhone";
+					textureImporterPlatformSettings.overridden = true;
+					textureImporterPlatformSettings.maxTextureSize = 1024;
+					textureImporterPlatformSettings.format = TextureImporterFormat.Automatic16bit;
+					textureImporterPlatformSettings.allowsAlphaSplitting = false;
+					texImp.SetPlatformTextureSettings(textureImporterPlatformSettings);
+
+                    texImp.SetPlatformTextureSettings("Android", 1024, TextureImporterFormat.AutomaticCompressed);
+                    */
 
                     texImp.SaveAndReimport();
                 }
@@ -707,18 +715,12 @@ public class Packager {
 
                     try { GetDirectoriesDeep(d11, pattern, ref al); }
 
-                    catch (System.Exception e)
-                    {
-                        UnityEngine.Debug.LogError(e.ToString());
-                    }
+					catch (System.Exception e) {Debug.LogError(e.ToString());}
 
                 }
 
             }
-            catch (System.Exception e)
-            {
-                UnityEngine.Debug.LogError(e.ToString());
-            }
+			catch (System.Exception e) { Debug.LogError(e.ToString()); }
 
 
 
@@ -838,7 +840,6 @@ public class Packager {
 
 
 
-
     //打包所有文件到单个文件中
     [MenuItem("LuaFramework/4 Merge All Resource", false, 400)]
     public static void PackFileList(){
@@ -847,6 +848,7 @@ public class Packager {
         paths.Clear(); files.Clear();
         Recursive(AppConst.PublishAssetsPath);
 
+//        ArrayList fileInfo = new ArrayList ();
         ArrayList copyFile = new ArrayList ();
         ArrayList packFile = new ArrayList();
         //读，再写

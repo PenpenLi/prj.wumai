@@ -216,7 +216,8 @@ public class GameMenu {
     static void ChangePartical()
     {
 		ChangeAllComponentInPrefab<ParticleSystem>(p => {
-			p.scalingMode = ParticleSystemScalingMode.Hierarchy;
+			var main = p.main;
+			main.scalingMode = ParticleSystemScalingMode.Hierarchy;
 		});
     }
 
